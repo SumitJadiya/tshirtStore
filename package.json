@@ -4,7 +4,8 @@
   "description": "Ecommerce Store using Mongo, Node, Express, React JS. Images to be stored in Cloudinary. Razorpay and stripe are integrated as payment gateways.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
