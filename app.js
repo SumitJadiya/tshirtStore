@@ -16,7 +16,12 @@ app.use(express.urlencoded({ extended: true }))
 
 // cookie and file middleware
 app.use(cookieParser())
-app.use(fileUpload())
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+  })
+)
 
 // morgan middleware
 app.use(morgan('tiny'))
