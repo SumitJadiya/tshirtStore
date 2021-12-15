@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: Tshirt Store API
+  description: E commerce web to run tshirt store
+  version: 1.1.0
+  contact:
+    email: jadiyaskj@gmail.com
+    url: "stjapps.in"
+# servers:
+#   - url: "https://localhost:4000/api/v1"
+#     description: for local host - secured
+#   - url: "http://localhost:4000/api/v1"
+#     description: for local host -  regular
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}"
+    description: for local host
+    variables:
+      protocol:
+        default: http
+        enum:
+          - http
+          - https
+      version:
+        default: v1
+        enum:
+          - v1
+          - v2
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /dummy:
+    get:
+      tags:
+        - Dummy
+      summary: returns a greet message from courses
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "mystring"
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
