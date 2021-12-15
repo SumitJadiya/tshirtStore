@@ -41,7 +41,6 @@ paths:
       tags:
         - User
       requestBody:
-        # required: true
         content:
           multipart/form-data:
             schema:
@@ -67,6 +66,81 @@ paths:
                   format: binary
                   required: true
       summary: signup a new user. required files are - name, email, password and photo
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      createdAt:
+                        type: string
+                      _id:
+                        type: string
+                example:
+                  {
+                    'success': true,
+                    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjllYjIwYjZkODlhYTU3NzUzZWY0YSIsImVtYWlsIjoidGVzdDEyM0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk1NzQzMDQsImV4cCI6MTYzOTgzMzUwNH0.2Y4wn1B_yWTqZLEBq4xgdF35HLHdm8QgQz1DNSCr8r4',
+                    'user':
+                      {
+                        'name': 'test123',
+                        'email': 'test123@gmail.com',
+                        'role': 'user',
+                        'photo':
+                          {
+                            'id': 'users/cgclnnfhi78urpvmqjna',
+                            'secure_url': 'https://res.cloudinary.com/stj11bitd/image/upload/v1639574304/users/cgclnnfhi78urpvmqjna.png',
+                          },
+                        'createdAt': '2021-12-15T13:17:03.448Z',
+                        '_id': '61b9eb20b6d89aa57753ef4a',
+                        '__v': 0,
+                      },
+                  }
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+  /login:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  required: true
+                password:
+                  type: string
+                  required: true
+      summary: login section for any registered user
       responses:
         200:
           description: success
