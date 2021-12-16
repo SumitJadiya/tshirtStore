@@ -54,7 +54,6 @@ userSchema.pre('save', async function (next) {
 
 // validate the password with passed on user password
 userSchema.methods.isValidatedPassword = async function (passedPassword) {
-  console.log(passedPassword)
   return await bcrypt.compare(passedPassword, this.password)
 }
 

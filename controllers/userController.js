@@ -133,3 +133,13 @@ exports.passwordReset = BigPromise(async (req, res, next) => {
   // send a response or token
   cookieToken(user, res)
 })
+
+exports.getLoggedInUserDetail = BigPromise(async (req, res, next) => {
+  const user = await User.findById(req.user.id)
+
+  // user.password = undefined
+  res.status(200).json({
+    success: true,
+    user,
+  })
+})
