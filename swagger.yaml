@@ -213,3 +213,34 @@ paths:
           description: bad request
         500:
           description: Internal Server Error
+  /forgotPassword:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      example: { 'email': 'jadiyaskj@gmail.com' }
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        404:
+          description: Not Found
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
