@@ -74,7 +74,7 @@ userSchema.methods.getForgotPasswordToken = function () {
   this.forgotPasswordToken = crypto.createHash('sha256').update(forgotToken).digest('hex')
 
   // time of token
-  this.forgotPasswordExpiry = Date.now() + process.env.FORGOT_PASSWORD_EXPIRY
+  this.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000
 
   return forgotToken
 }

@@ -4,6 +4,7 @@ const customError = require('../utils/customError')
 const { cookieToken } = require('../utils/cookieToken')
 const cloudinary = require('cloudinary').v2
 const mailHelper = require('../utils/emailHelper')
+const crypto = require('crypto')
 
 exports.signup = BigPromise(async (req, res, next) => {
   if (!req.files) return next(new customError(res, 'Photo is required field!', 400))
@@ -72,15 +73,18 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
 
   if (!email) return next(new customError(res, 'Please enter email and password', 400))
 
+  // find user in database
   const user = await User.findOne({ email })
 
   if (!user)
     return next(new customError(res, 'User not registered or email is incorrect!', 400))
 
+  // get token from user model method
   const forgotToken = user.getForgotPasswordToken()
 
   await user.save({ validateBeforeSave: false })
 
+  // generate URL
   const myUrl = `${req.protocol}://${req.get('host')}/password/reset/${forgotToken}`
 
   const message = `Copy paste this link in your URL and hit enter \n\n ${myUrl}`
@@ -103,4 +107,29 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
     await user.save({ validateBeforeSave: false })
     return next(new customError(res, err.message, 500))
   }
+})
+
+exports.passwordReset = BigPromise(async (req, res, next) => {
+  const token = req.params.token
+  const encryptedToken = crypto.createHash('sha256').update(token).digest('hex')
+
+  const user = await User.findOne({
+    encryptedToken,
+    forgotPasswordExpiry: { $gt: Date.now() },
+  })
+
+  if (!user) return next(new customError(res, 'Token is invalid or expired!', 400))
+
+  if (req.body.password != req.body.confirmPassword)
+    return next(new customError(res, 'Both password do not match!', 400))
+
+  user.password = req.body.password
+
+  user.forgotPasswordToken = undefined
+  user.forgotPasswordExpiry = undefined
+
+  await user.save()
+
+  // send a response or token
+  cookieToken(user, res)
 })
