@@ -5,6 +5,7 @@ const { cookieToken } = require('../utils/cookieToken')
 const cloudinary = require('cloudinary').v2
 const mailHelper = require('../utils/emailHelper')
 const crypto = require('crypto')
+const user = require('../models/user')
 
 exports.signup = BigPromise(async (req, res, next) => {
   if (!req.files) return next(new customError(res, 'Photo is required field!', 400))
@@ -142,4 +143,20 @@ exports.getLoggedInUserDetail = BigPromise(async (req, res, next) => {
     success: true,
     user,
   })
+})
+
+exports.changePassword = BigPromise(async (req, res, next) => {
+  const userId = req.user.id
+
+  const user = await User.findById(userId).select('+password')
+
+  const validateOldPassword = await user.isValidatedPassword(req.body.oldPassword)
+
+  if (!validateOldPassword) return next(new customError('old password is incorrect', 400))
+
+  user.password = req.body.newPassword
+
+  await user.save()
+
+  cookieToken(user, res)
 })
