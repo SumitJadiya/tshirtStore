@@ -214,3 +214,29 @@ exports.adminAllUsers = BigPromise(async (req, res, next) => {
     users,
   })
 })
+
+exports.managerAllUsers = BigPromise(async (req, res, next) => {
+  const users = await User.find({ role: 'user' })
+
+  res.status(200).json({
+    success: true,
+    users,
+  })
+})
+
+exports.adminGetSingleUser = BigPromise(async (req, res, next) => {
+  let user
+  const { id } = req.params
+
+  // check if the id is 24 char long string as per mongodb standard
+  if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    user = await User.findById(id)
+  }
+
+  if (!user) return next(new customError(res, 'No User Found', 404))
+
+  res.status(200).json({
+    success: true,
+    user,
+  })
+})

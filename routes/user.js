@@ -9,8 +9,12 @@ const {
   changePassword,
   updateUserDetails,
   adminAllUsers,
+  managerAllUsers,
+  adminGetSingleUser,
 } = require('../controllers/userController')
+
 const { isLoggedIn, customRole } = require('../middlewares/user')
+
 const router = express.Router()
 
 router.route('/signup').post(signup)
@@ -21,6 +25,10 @@ router.route('/password/reset/:token').post(passwordReset)
 router.route('/userDashboard').get(isLoggedIn, getLoggedInUserDetail) // isLoggedIn middleware will be triggered first
 router.route('/password/update').post(isLoggedIn, changePassword)
 router.route('/userDashboard/update').post(isLoggedIn, updateUserDetails)
-router.route('/admin/users').get(isLoggedIn, customRole('admin'), adminAllUsers)
+
+router.route('/admin/users').get(isLoggedIn, customRole('admin'), adminAllUsers) // admin only route
+router.route('/admin/user/:id').get(isLoggedIn, customRole('admin'), adminGetSingleUser) // manager only route
+
+router.route('/manager/users').get(isLoggedIn, customRole('manager'), managerAllUsers) // manager only route
 
 module.exports = router
