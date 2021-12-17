@@ -140,6 +140,7 @@ paths:
                 password:
                   type: string
                   required: true
+            example: { 'email': 'jadiyaskj@gmail.com', 'password': '123456qwerty' }
       summary: login section for any registered user
       responses:
         200:
@@ -189,7 +190,6 @@ paths:
                           },
                         'createdAt': '2021-12-15T13:17:03.448Z',
                         '_id': '61b9eb20b6d89aa57753ef4a',
-                        '__v': 0,
                       },
                   }
         400:
@@ -200,12 +200,18 @@ paths:
     get:
       tags:
         - User
-      parameters:
-        - in: header
-          name: cookie
-      summary: logout route for any registered user
+      summary: get request to logout the user. Also removes httpOnly cookies
       responses:
         200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
           description: success
         404:
           description: Not Found
@@ -215,6 +221,7 @@ paths:
           description: Internal Server Error
   /forgotPassword:
     post:
+      summary: sends an email with link to forgot password. Contains the token for user validation. Public hosted version will not send email to your account. Use your own SMTP details to access this feature on local project
       tags:
         - User
       requestBody:
@@ -222,10 +229,12 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - email
               properties:
                 email:
                   type: string
-      example: { 'email': 'jadiyaskj@gmail.com' }
+              example: { 'email': 'jadiyaskj@gmail.com' }
       responses:
         200:
           description: success
@@ -244,24 +253,31 @@ paths:
           description: bad request
         500:
           description: Internal Server Error
-  /password/reset:
+  /password/reset/{token}:
     post:
+      summary: Allows user to reset password, validated based on token. send password and confirm password fields
       tags:
         - User
       parameters:
-        - in: header
-          name: cookie
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              required:
+                - password
+                - confirmPassword
               properties:
                 password:
                   type: string
                 confirmPassword:
                   type: string
-      example: { 'password': '123456qwerty', 'confirmPassword': '123456qwerty' }
+              example: { 'password': '123456qwerty', 'confirmPassword': '123456qwerty' }
       responses:
         200:
           description: password reset successful
@@ -316,5 +332,131 @@ paths:
           description: Not Found
         400:
           description: bad request
+        500:
+          description: Internal Server Error
+  /userDashboard:
+    get:
+      summary: Gets all details about logged in user. Send token in cookies as named token or send Bearer Auth
+      tags:
+        - User
+      responses:
+        200:
+          description: password reset successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      createdAt:
+                        type: string
+              example:
+                {
+                  'success': true,
+                  'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYmE5ZWQxMzhkMjdjN2RjMGUyZDYyZCIsImVtYWlsIjoiamFkaXlhc2tqQGdtYWlsLmNvbSIsImlhdCI6MTYzOTYyMDM0NiwiZXhwIjoxNjM5ODc5NTQ2fQ.I5BAAhkGDdJidrQg52UKvx93pLKogFVYKM4BRDQSpI0',
+                  'user':
+                    {
+                      'photo':
+                        {
+                          'id': 'users/xyffogqxf2hxpqkcoxan',
+                          'secure_url': 'https://res.cloudinary.com/stj11bitd/image/upload/v1639620305/users/xyffogqxf2hxpqkcoxan.png',
+                        },
+                      '_id': '61ba9ed138d27c7dc0e2d62d',
+                      'name': 'Sumit Jadiya',
+                      'email': 'jadiyaskj@gmail.com',
+                      'role': 'user',
+                      'createdAt': '2021-12-16T02:00:44.887Z',
+                    },
+                }
+        404:
+          description: Not Found
+        401:
+          description: Unauthorized
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+  /password/update:
+    post:
+      tags:
+        - User
+      summary: Update password of registered user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+              example: { 'oldPassword': '123456qwerty', 'newPassword': '123456@qwerty' }
+      responses:
+        200:
+          description: password updated
+        400:
+          description: bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+  /userDashboard/update:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - name
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+              example: { 'email': 'test@gmail.com', 'name': 'qwerty test' }
+      responses:
+        200:
+          description: user dashboard updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                example: { 'success': true }
+        400:
+          description: bad request
+        401:
+          description: Unauthorized
         500:
           description: Internal Server Error
