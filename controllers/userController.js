@@ -240,3 +240,45 @@ exports.adminGetSingleUser = BigPromise(async (req, res, next) => {
     user,
   })
 })
+
+exports.adminUpdateSingleUser = BigPromise(async (req, res, next) => {
+  const { name, email, role } = req.body
+
+  if (!email && !name && !role)
+    return next(
+      new customError(res, 'Please enter name, email or role to update the profile', 400)
+    )
+
+  const newData = {
+    name,
+    email,
+    role,
+  }
+
+  // find and update data
+  const user = await User.findByIdAndUpdate(req.user.id, newData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  })
+
+  res.status(200).json({
+    success: true,
+  })
+})
+
+exports.adminDeleteSingleUser = BigPromise(async (req, res, next) => {
+  const { id } = req.params
+
+  const user = await User.find(id)
+
+  if (!user) return next(new customError(res, 'User not found!', 404))
+
+  await cloudinary.uploader.destroy(user.photo.id)
+
+  await User.remove(id)
+
+  res.status(200).json({
+    success: true,
+  })
+})
