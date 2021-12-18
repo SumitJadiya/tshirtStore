@@ -7,7 +7,7 @@ const app = express()
 // for swagger documentation
 const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
-const swaggerDocument = yaml.load('./swagger.yaml')
+const swaggerDocument = yaml.load('./swagger/swagger.yaml')
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // regular middleware
