@@ -2,34 +2,34 @@ const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
   name: {
-    name: String,
+    type: String,
     required: [true, 'please provide product name'],
     trim: true,
     maxlength: [120, 'Product name should not exceed 120 chars'],
   },
   price: {
-    name: Number,
+    type: Number,
     required: [true, 'please provide product price'],
     maxlength: [5, 'Product name should not exceed 5 digits'],
   },
   description: {
-    name: String,
+    type: String,
     required: [true, 'please provide product description'],
   },
   photos: [
     {
       id: {
-        name: String,
+        type: String,
         required: true,
       },
       secure_url: {
-        name: String,
+        type: String,
         required: true,
       },
     },
   ],
   category: {
-    name: String,
+    type: String,
     required: [
       true,
       'please select category from - short-sleeves, long-sleeves, sweat-shirt, hoodies',
@@ -41,19 +41,19 @@ const productSchema = new mongoose.Schema({
     },
   },
   brand: {
-    name: String,
+    type: String,
     required: [true, 'please add a brand'],
   },
   stock: {
-    name: Number,
+    type: Number,
     default: 0,
   },
   ratings: {
-    name: Number,
+    type: Number,
     default: 0,
   },
   numOfReviews: {
-    name: Number,
+    type: Number,
     default: 0,
   },
   reviews: [
@@ -63,7 +63,7 @@ const productSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
       },
-      name: {
+      type: {
         type: String,
         required: true,
       },
