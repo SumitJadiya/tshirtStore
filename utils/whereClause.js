@@ -17,4 +17,12 @@ class WhereClause {
     this.base = this.base.find({ ...searchWord })
     return this
   }
+
+  pager(resultPerPage) {
+    let currentPage = 1
+    this.bigQ.page ? (currentPage = this.bigQ.page) : {}
+
+    this.base = this.base.limit(resultPerPage).skip((currentPage - 1) * resultPerPage)
+    return this
+  }
 }
