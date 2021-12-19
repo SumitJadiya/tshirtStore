@@ -74,25 +74,7 @@ paths:
                   token:
                     type: string
                   user:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role:
-                        type: string
-                      photo:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          secure_url:
-                            type: string
-                      createdAt:
-                        type: string
-                      _id:
-                        type: string
+                    $ref: '#/definitions/User'
                 example:
                   {
                     'success': true,
@@ -150,25 +132,7 @@ paths:
                   token:
                     type: string
                   user:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role:
-                        type: string
-                      photo:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          secure_url:
-                            type: string
-                      createdAt:
-                        type: string
-                      _id:
-                        type: string
+                    $ref: '#/definitions/User'
                 example:
                   {
                     'success': true,
@@ -347,25 +311,7 @@ paths:
                   token:
                     type: string
                   user:
-                    type: object
-                    properties:
-                      photo:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          secure_url:
-                            type: string
-                      _id:
-                        type: string
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role:
-                        type: string
-                      createdAt:
-                        type: string
+                    $ref: '#/definitions/User'
               example:
                 {
                   'success': true,
@@ -485,7 +431,7 @@ paths:
         - Admin
       summary: If user is admin, response will get user by ID
       parameters:
-        - in: query
+        - in: path
           name: id
           required: true
           schema:
@@ -503,6 +449,101 @@ paths:
                     type: string
                   user:
                     $ref: '#/definitions/User'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+    put:
+      tags:
+        - Admin
+      summary: If user is admin, user profile will be updated by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            id:
+              type: string
+        - in: formData
+          name: name
+          required: true
+          schema:
+            type: string
+        - in: formData
+          name: email
+          required: true
+          schema:
+            type: string
+        - in: formData
+          name: role
+          required: true
+          schema:
+            type: string
+            enum: [user, admin, manager]
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  user:
+                    $ref: '#/definitions/User'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+    delete:
+      tags:
+        - Admin
+      summary: If user is admin, user profile will get deleted by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            id:
+              type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+  /manager/users:
+    get:
+      tags:
+        - Manager
+      summary: If user is manager, response will get array of all users
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/definitions/User'
         400:
           description: bad request
         500:
