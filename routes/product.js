@@ -1,9 +1,13 @@
 const express = require('express')
-const { addProduct } = require('../controllers/productController')
+const { addProduct, getAllProducts } = require('../controllers/productController')
 const { isLoggedIn, customRole } = require('../middlewares/user')
 
 const router = express.Router()
 
-router.route('/test').post(addProduct)
+// user route
+router.route('/products').get(getAllProducts)
+
+// admin route
+router.route('/admin/product/add').post(isLoggedIn, customRole('admin'), addProduct)
 
 module.exports = router
