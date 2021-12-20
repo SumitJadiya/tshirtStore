@@ -19,7 +19,7 @@ router.route('/product/:id').get(getSingleProduct)
 router.route('/admin/products').get(isLoggedIn, customRole('admin'), adminGetAllProducts)
 router.route('/admin/product/add').post(isLoggedIn, customRole('admin'), addProduct)
 router
-  .route('/admin/product/update')
+  .route('/admin/product/:id')
   .put(isLoggedIn, customRole('admin'), adminUpdateSingleProduct)
   .delete(isLoggedIn, customRole('admin'), adminDeleteSingleProduct)
 

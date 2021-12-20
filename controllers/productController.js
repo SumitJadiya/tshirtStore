@@ -65,8 +65,46 @@ exports.getSingleProduct = BigPromise(async (req, res, next) => {
   })
 })
 
+exports.addReview = BigPromise(async (req, res, next) => {
+  const { rating, comment, productId } = req.body
+
+  const review = {
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  }
+
+  const product = await findById(productId)
+
+  const checkIfAlreadyReviewed = product.reviews.find(
+    (review) => review.user.toString() === req.user._id
+  )
+
+  if (checkIfAlreadyReviewed) {
+    product.reviews.forEach((review) => {
+      if (review.user.toString() === req.user._id) {
+        review.comment = comment
+        review.rating = rating
+      }
+    })
+  } else {
+    product.reviews.push(review)
+    product.numOfReviews = product.reviews.length
+  }
+
+  // adjust ratings
+  product.ratings =
+    product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
+
+  // save
+  await product.save({ validateBeforeSave: false })
+
+  res.status(200).json({ success: true })
+})
+
 exports.adminUpdateSingleProduct = BigPromise(async (req, res, next) => {
-  let product = await Product.find(req.params.id)
+  let product = await Product.findById(req.params.id)
 
   let imagesArray = []
 
@@ -104,7 +142,7 @@ exports.adminUpdateSingleProduct = BigPromise(async (req, res, next) => {
 })
 
 exports.adminDeleteSingleProduct = BigPromise(async (req, res, next) => {
-  let product = await Product.find(req.params.id)
+  let product = await Product.findById(req.params.id)
 
   if (!product) next(new customError(res, 'No product found with this ID', 401))
 
