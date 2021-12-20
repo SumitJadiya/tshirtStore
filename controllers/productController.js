@@ -103,6 +103,23 @@ exports.adminUpdateSingleProduct = BigPromise(async (req, res, next) => {
   })
 })
 
+exports.adminDeleteSingleProduct = BigPromise(async (req, res, next) => {
+  let product = await Product.find(req.params.id)
+
+  if (!product) next(new customError(res, 'No product found with this ID', 401))
+
+  // destroy existing image
+  for (let index = 0; index < product.photos.length; index++)
+    await cloudinary.uploader.destroy(product.photos[index].id)
+
+  await product.remove()
+
+  res.status(200).json({
+    success: true,
+    message: 'product deleted successfully!',
+  })
+})
+
 exports.adminGetAllProducts = BigPromise(async (req, res, next) => {
   const products = await Product.find()
 

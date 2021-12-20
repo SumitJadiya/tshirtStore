@@ -5,6 +5,7 @@ const {
   adminGetAllProducts,
   getSingleProduct,
   adminUpdateSingleProduct,
+  adminDeleteSingleProduct,
 } = require('../controllers/productController')
 const { isLoggedIn, customRole } = require('../middlewares/user')
 
@@ -19,6 +20,7 @@ router.route('/admin/products').get(isLoggedIn, customRole('admin'), adminGetAll
 router.route('/admin/product/add').post(isLoggedIn, customRole('admin'), addProduct)
 router
   .route('/admin/product/update')
-  .post(isLoggedIn, customRole('admin'), adminUpdateSingleProduct)
+  .put(isLoggedIn, customRole('admin'), adminUpdateSingleProduct)
+  .delete(isLoggedIn, customRole('admin'), adminDeleteSingleProduct)
 
 module.exports = router
