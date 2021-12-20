@@ -75,7 +75,7 @@ exports.addReview = BigPromise(async (req, res, next) => {
     comment,
   }
 
-  const product = await findById(productId)
+  const product = await Product.findById(productId)
 
   const checkIfAlreadyReviewed = product.reviews.find(
     (review) => review.user.toString() === req.user._id
@@ -101,6 +101,52 @@ exports.addReview = BigPromise(async (req, res, next) => {
   await product.save({ validateBeforeSave: false })
 
   res.status(200).json({ success: true })
+})
+
+exports.deleteReview = BigPromise(async (req, res, next) => {
+  const { productId } = req.query
+
+  const product = await findById(productId)
+
+  const reviews = product.reviews.filter(
+    (review) => review.user.toString() === req.user._id
+  )
+
+  const numOfReviews = reviews.length
+
+  // adjust ratings
+  product.ratings =
+    product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
+
+  // update
+  await Product.findByIdAndUpdate(
+    productId,
+    {
+      reviews,
+      ratings,
+      numOfReviews,
+    },
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  )
+
+  res.status(200).json({ success: true })
+})
+
+exports.fetchReviewForOneProduct = BigPromise(async (req, res, next) => {
+  const { productId } = req.query
+
+  const product = await Product.findById(productId)
+
+  const review = product.reviews
+
+  res.status(200).json({
+    success: true,
+    review,
+  })
 })
 
 exports.adminUpdateSingleProduct = BigPromise(async (req, res, next) => {
