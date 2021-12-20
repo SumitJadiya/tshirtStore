@@ -65,6 +65,44 @@ exports.getSingleProduct = BigPromise(async (req, res, next) => {
   })
 })
 
+exports.adminUpdateSingleProduct = BigPromise(async (req, res, next) => {
+  let product = await Product.find(req.params.id)
+
+  let imagesArray = []
+
+  if (!product) next(new customError(res, 'No product found with this ID', 401))
+
+  if (req.files) {
+    // destroy existing image
+    for (let index = 0; index < product.photos.length; index++)
+      await cloudinary.uploader.destroy(product.photos[index].id)
+  }
+
+  for (let index = 0; index < product.photos.length; index++) {
+    let result = await cloudinary.uploader.upload(req.files.photos[index].tempFilePath, {
+      folder: 'products',
+    })
+
+    imagesArray.push({
+      id: result.public_id,
+      secure_url: result.secure_url,
+    })
+  }
+
+  req.body.photos = imagesArray
+
+  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  })
+
+  res.status(200).json({
+    success: true,
+    product,
+  })
+})
+
 exports.adminGetAllProducts = BigPromise(async (req, res, next) => {
   const products = await Product.find()
 
