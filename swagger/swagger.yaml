@@ -370,6 +370,7 @@ paths:
     post:
       tags:
         - User
+      summary: Update dashboard of registered user
       requestBody:
         content:
           application/json:
@@ -549,6 +550,64 @@ paths:
         500:
           description: Internal Server Error
 
+  /admin/product/add:
+    post:
+      tags:
+        - Admin
+
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - price
+                - description
+                - category
+                - brand
+                - photos
+              properties:
+                name:
+                  type: string
+                  required: true
+                price:
+                  type: number
+                  required: true
+                description:
+                  type: string
+                  required: true
+                category:
+                  type: string
+                  enum: ['shortSleeves', 'longSleeves', 'sweatShirt', 'hoodies']
+                  required: true
+                brand:
+                  type: string
+                  required: true
+                photos:
+                  in: formData
+                  type: file
+                  format: binary
+                  required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Product'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
 definitions:
   User:
     type: object
@@ -566,6 +625,46 @@ definitions:
             type: string
           secure_url:
             type: string
+      createdAt:
+        type: string
+      _id:
+        type: string
+  Product:
+    type: object
+    properties:
+      name:
+        type: string
+      price:
+        type: number
+      description:
+        type: string
+      photos:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            secure_url:
+              type: string
+            _id:
+              type: string
+      category:
+        type: string
+      brand:
+        type: string
+      stock:
+        type: number
+      ratings:
+        type: number
+      numOfReviews:
+        type: number
+      user:
+        type: string
+      reviews:
+        type: array
+        items:
+          type: string
       createdAt:
         type: string
       _id:
