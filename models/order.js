@@ -29,7 +29,7 @@ const orderSchema = new mongoose.Schema({
   },
 
   user: {
-    type: mongoose.Schema.objectId, // or mongoose.Schema.Types.objectId
+    type: mongoose.Schema.ObjectId, // or mongoose.Schema.Types.objectId
     ref: 'User',
     required: true,
   },
@@ -53,7 +53,7 @@ const orderSchema = new mongoose.Schema({
         required: true,
       },
       product: {
-        type: mongoose.Schema.objectId,
+        type: mongoose.Schema.ObjectId,
         ref: 'Product',
         required: true,
       },
@@ -70,14 +70,17 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
   shippingAmount: {
     type: Number,
     required: true,
   },
+
   totalAmount: {
     type: Number,
     required: true,
   },
+
   orderStatus: {
     type: String,
     default: 'processing',
