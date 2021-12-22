@@ -554,7 +554,6 @@ paths:
     post:
       tags:
         - Admin
-
       requestBody:
         content:
           multipart/form-data:
@@ -603,6 +602,133 @@ paths:
                     type: array
                     items:
                       $ref: '#/definitions/Product'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+  /products:
+    get:
+      tags:
+        - User
+      summary: return all the products
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Product'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+  /admin/products:
+    get:
+      tags:
+        - Admin
+      summary: return all the products for admin
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Product'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+  /product/{productId}:
+    get:
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: productId
+          required: true
+      summary: get single product for user
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Product'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+
+  /admin/product/{productId}:
+    put:
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: productId
+          required: true
+
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  in: formData
+                  type: file
+                  format: binary
+                price:
+                  type: string
+      summary: update single product for admin
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Product'
+        400:
+          description: bad request
+        500:
+          description: Internal Server Error
+    delete:
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: productId
+          required: true
+      summary: update single product for admin
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  message:
+                    type: string
         400:
           description: bad request
         500:
