@@ -45,7 +45,20 @@ exports.createOrder = BigPromise(async (req, res, next) => {
 })
 
 exports.getOrderById = BigPromise(async (req, res, next) => {
-  const order = await Order.findById(req.params.id)
+  const order = await Order.findById(req.params.id).populate('user', 'name email role') // populate will drill down the json further
+
+  if (!order) next(new customError(res, 'Order does not exist!', 400))
+
+  res.status(200).json({
+    success: true,
+    order,
+  })
+})
+
+exports.getAllOrdersForUser = BigPromise(async (req, res, next) => {
+  const loggedInUser = req.user._id
+
+  const order = await Order.find({ user: loggedInUser })
 
   if (!order) next(new customError(res, 'Order does not exist!', 400))
 
