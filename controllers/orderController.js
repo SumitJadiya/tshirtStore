@@ -13,10 +13,6 @@ exports.createOrder = BigPromise(async (req, res, next) => {
     totalAmount,
   } = req.body
 
-  const { address, city, phoneNumber, postalCode, state, country } = shippingInfo
-
-  const { name, qty, image, price, product } = orderItems
-
   if (
     !shippingInfo &&
     !orderItems &&
@@ -25,8 +21,13 @@ exports.createOrder = BigPromise(async (req, res, next) => {
     !shippingAmount &&
     !totalAmount
   ) {
-    next(new customError(res, 'Please enter valid values', 400))
+    return next(new customError(res, 'Please enter valid values', 400))
   }
+
+  orderItems.forEach(async (prod) => {
+    if ((await updateProductStock(prod.product, prod.qty)) === null)
+      return next(new customError(res, 'Please enter valid quantity', 400))
+  })
 
   const order = await Order.create({
     shippingInfo,
@@ -47,7 +48,7 @@ exports.createOrder = BigPromise(async (req, res, next) => {
 exports.getOrderById = BigPromise(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate('user', 'name email role') // populate will drill down the json further
 
-  if (!order) next(new customError(res, 'Order does not exist!', 400))
+  if (!order) return next(new customError(res, 'Order does not exist!', 400))
 
   res.status(200).json({
     success: true,
@@ -67,3 +68,46 @@ exports.getAllOrdersForUser = BigPromise(async (req, res, next) => {
     order,
   })
 })
+
+exports.getAllOrders = BigPromise(async (req, res, next) => {
+  const orders = await Order.find()
+
+  res.status(200).json({
+    success: true,
+    orders,
+  })
+})
+
+exports.adminUpdateOrder = BigPromise(async (req, res, next) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order.orderStatus === 'delivered') {
+    return next(new customError(res, 'Order already marked for delivered', 400))
+  }
+  order.orderStatus = req.body.orderStatus
+
+  order.orderItems.forEach(async (prod) => {
+    if (
+      orderStatus === 'delivered' &&
+      (await updateProductStock(prod.product, prod.qty)) === null
+    )
+      return next(new customError(res, 'Please enter valid quantity', 400))
+  })
+
+  await order.save()
+
+  res.status(200).json({
+    success: true,
+    order,
+  })
+})
+
+async function updateProductStock(productId, quantity) {
+  const product = await Product.findById(productId)
+
+  if (product.stock < quantity) return null
+
+  product.stock -= quantity
+
+  await product.save({ validateBeforeSave: false })
+}
