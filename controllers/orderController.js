@@ -43,3 +43,14 @@ exports.createOrder = BigPromise(async (req, res, next) => {
     order,
   })
 })
+
+exports.getOrderById = BigPromise(async (req, res, next) => {
+  const order = await Order.findById(req.params.id)
+
+  if (!order) next(new customError(res, 'Order does not exist!', 400))
+
+  res.status(200).json({
+    success: true,
+    order,
+  })
+})
