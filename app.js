@@ -24,7 +24,7 @@ app.use(
 )
 
 // temp check
-app.set('view engine', 'ejs')
+// app.set('view engine', 'ejs')
 
 // morgan middleware
 app.use(morgan('tiny'))
@@ -42,9 +42,6 @@ app.use('/api/v1', user)
 app.use('/api/v1', product)
 app.use('/api/v1', payment)
 app.use('/api/v1', order)
-app.get('/signuptest', (req, res) => {
-  res.render('signuptest')
-})
 
 // export app js
 module.exports = app

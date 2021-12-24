@@ -13,11 +13,25 @@ Ecommerce Store using Mongo, Node, Express, React JS. Images to be stored in Clo
   - productController.js
   - userController.js
 - middlewares
+  - bigPromise.js
+  - user.js
 - models
+  - order.js
+  - product.js
+  - user.js
 - routes
+  - home.js
+  - order.js
+  - payment.js
+  - product.js
+  - user.js
 - swagger
+  - swagger.yaml
 - utils
-- views
+  - cookieToken.js
+  - currentError.js
+  - emailHelper.js
+  - whereClause.js
 - .env
 - .gitignore
 - app.js
