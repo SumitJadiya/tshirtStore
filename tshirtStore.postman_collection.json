@@ -1,0 +1,613 @@
+{
+	"info": {
+		"_postman_id": "a290da9a-bbaf-4d53-bf9b-c6f2ca93f410",
+		"name": "tshirtStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18259500"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Manager Jadiya",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "manager@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456qwerty",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/Users/sumitjadiya/Desktop/Screenshot 2021-11-17 at 4.20.07 PM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/signup",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"jadiyaskj@gmail.com\",\n    \"password\":\"123456qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/login",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/logout",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jadiyaskj@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/forgotPassword",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"forgotPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordReset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\":\"123456qwerty\",\n    \"confirmPassword\":\"123456qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/password/reset/5c4ab96a224092842c540fb53721c760f7339bbc",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"password",
+								"reset",
+								"5c4ab96a224092842c540fb53721c760f7339bbc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userDashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/userDashboard",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"userDashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\":\"123456qwerty\",\n    \"newPassword\":\"123456@qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/password/update",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"password",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUserDetails",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"test@gmail.com\",\n    \"name\":\"qwerty test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/userDashboard/update",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"userDashboard",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manager | Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/manager/users",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"manager",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin | Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/admin/users",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin | get user by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/admin/user/61b9e1b0324490cc71483ec4",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"61b9e1b0324490cc71483ec4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Admin | Add Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Pro Coder hoodies",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1999",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A pro hoodies for pro coders",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "hoodies",
+									"type": "text"
+								},
+								{
+									"key": "brand",
+									"value": "LCOT",
+									"type": "text"
+								},
+								{
+									"key": "photos",
+									"type": "file",
+									"src": [
+										"/Users/sumitjadiya/Downloads/coder/coder-hoodie/coder-hoodie-blue.png",
+										"/Users/sumitjadiya/Downloads/coder/coder-hoodie/coder-hoodie.jpg",
+										"/Users/sumitjadiya/Downloads/coder/coder-hoodie/coder-hoodie-golden.png",
+										"/Users/sumitjadiya/Downloads/coder/coder-hoodie/coder-hoodie-green.png"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/admin/product/add",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"admin",
+								"product",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/products",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin | Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/admin/products",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"admin",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Single Product ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/product/61bf166467fb319f578fa553",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"product",
+								"61bf166467fb319f578fa553"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin | update product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photos",
+									"type": "file",
+									"src": [
+										"/Users/sumitjadiya/Downloads/coder/coder-t/coder-golden.png",
+										"/Users/sumitjadiya/Downloads/coder/coder-t/coder-green.png",
+										"/Users/sumitjadiya/Downloads/coder/coder-t/coder-blue.png",
+										"/Users/sumitjadiya/Downloads/coder/coder-t/coder.jpg"
+									]
+								},
+								{
+									"key": "price",
+									"value": "699",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/admin/product/61bf166467fb319f578fa553",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"admin",
+								"product",
+								"61bf166467fb319f578fa553"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin | delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/admin/product/61c0aeb3c6483d252200f02e",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"admin",
+								"product",
+								"61c0aeb3c6483d252200f02e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Get Stripe Key",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/stripeKey",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"stripeKey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Razorpay Key",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/razorpayKey",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"razorpayKey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "captureRazorpayPayment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\":\"10000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/captureRazorpayPayment",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"captureRazorpayPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "captureStripePayment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\":\"10000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/captureStripePayment",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"captureStripePayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"shippingInfo\": {\n        \"address\": \"J Grevelia\",\n        \"city\": \"Pune\",\n        \"phoneNumber\": \"9088547839\",\n        \"postalCode\": \"411028\",\n        \"state\": \"MH\",\n        \"country\": \"India\"\n    },\n    \"user\": \"61ba0d9b4ee0446a3b7c7bbc\",\n    \"orderItems\": [\n        {\n            \"name\": \"Soem T-shirt\",\n            \"qty\": 14,\n            \"price\": 699,\n            \"image\": \"https://res.cloudinary.com/stj11bitd/image/upload/v1640017542/products/zt9lrcvtygj1mdnovwq1.png\",\n            \"product\": \"61bf166467fb319f578fa553\"\n        }\n    ],\n    \"paymentInfo\": \"\",\n    \"taxAmount\": 100,\n    \"shippingAmount\": 50,\n    \"totalAmount\": 849,\n    \"orderStatus\": \"processing\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/order/create",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"order",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get order by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/order/61c36ef70a0417a70c8dc2a5",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"order",
+								"61c36ef70a0417a70c8dc2a5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/orders",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
